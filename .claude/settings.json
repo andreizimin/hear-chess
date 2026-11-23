@@ -1,0 +1,14 @@
+{
+  "extraKnownMarketplaces": {
+    "jszmajda-lid": {
+      "source": {
+        "source": "github",
+        "repo": "jszmajda/lid"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "linked-intent-dev@jszmajda-lid": true,
+    "arrow-maintenance@jszmajda-lid": true
+  }
+}
