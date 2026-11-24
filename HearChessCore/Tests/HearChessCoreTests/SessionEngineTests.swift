@@ -511,6 +511,27 @@ struct SessionEngineTests {
         #expect(spoken(h.send(.tick, after: 16)) == [SpokenChess.text(for: colourF6.prompt)], "automatic repeat reset")
     }
 
+    // @spec SESSION-CONF-006
+    @Test func notUnderstoodWhileConfirmingAsksTheSameCandidate() {
+        let h = Harness(exercises: [twoRightOfE4])
+        h.start()
+        h.say(["b four", "d four"]); h.finishSpeaking()
+        #expect(spoken(h.say("banana")) == ["Sorry?"])
+        #expect(listens(h.finishSpeaking()) == [.exercise(.yesOrNo)])
+        #expect(h.engine.state == .confirming)
+        #expect(spoken(h.say("no")) == ["Dee four?"], "still on the first candidate until answered")
+    }
+
+    // @spec SESSION-PAUSE-006
+    @Test func resumingAfterPausedFeedbackGoesToTheNextQuestion() {
+        let h = Harness(exercises: [colourF6, colourE4])
+        h.start()
+        h.answerWrong()                          // correction being spoken
+        h.gesture(.twoFingerDoubleTap)
+        let fx = h.gesture(.twoFingerDoubleTap, after: 5)
+        #expect(spoken(fx) == [SpokenChess.text(for: colourE4.prompt)])
+    }
+
     // @spec SESSION-PAUSE-005
     @Test func pausedSessionCountsAsRunning() {
         let h = Harness(exercises: [colourF6])

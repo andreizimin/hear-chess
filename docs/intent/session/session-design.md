@@ -56,7 +56,7 @@ stateDiagram-v2
 - **Asking** — the prompt is spoken. The microphone is off while the app speaks, so input during the prompt is ignored except the pause and stop gestures and the headphones' play/pause button, which act at once.
 - **Listening** — voice and touch are both live, and whichever completes an answer first is used. The session waits in silence with no time limit. After 15 seconds with no speech and no touch since the app last spoke, it simply asks the question again, once per exercise, and then waits again.
 - **Not understood** — the app says "Sorry?" and keeps listening. On the third in a row it repeats the question instead and starts counting again.
-- **Confirming** — the app asks about a candidate: "b four?". This happens when it heard two or more different answers, or only a weak one. "Yes" or a swipe right accepts it. "No" or a swipe left asks about the next candidate; when none is left, the app says "Say it again?" and goes back to listening. While confirming, only yes or no to the candidate counts as an answer; repeat, "I don't know", pause and stop still work.
+- **Confirming** — the app asks about a candidate: "b four?". This happens when it heard two or more different answers, or only a weak one. "Yes" or a swipe right accepts it. "No" or a swipe left asks about the next candidate; when none is left, the app says "Say it again?" and goes back to listening. While confirming, only yes or no to the candidate counts as an answer; repeat, "I don't know", pause and stop still work. A reply that is not understood gets "Sorry?", and the same candidate is asked about again.
 - **Skip or "I don't know"** — counts as a wrong answer and goes to feedback, correction included.
 - **Feedback** — a short sound for right and a different one for wrong. After a wrong answer the correction is spoken. Then the next exercise is asked straight away.
 - **Repeat** says the prompt again; the answer time keeps counting from the first time it was asked.
@@ -65,7 +65,7 @@ The answer time runs from the end of the prompt to the moment the player begins 
 
 ## Pause
 
-Pause comes from saying "pause", the pause gesture, the headphones' play/pause button, an audio interruption such as a phone call, or headphones disconnecting. It takes effect at once from any state: any speech in progress stops, any confirmation or touch pick in progress is dropped, and the microphone listens only for "resume" and "stop". A paused session still counts as running, so the headphones' play button resumes it. Resuming — by saying "resume" or "continue", the pause gesture or the play button — asks the current question again, with its automatic repeat and "Sorry?" count reset. A session paused for 10 minutes in a row ends.
+Pause comes from saying "pause", the pause gesture, the headphones' play/pause button, an audio interruption such as a phone call, or headphones disconnecting. It takes effect at once from any state: any speech in progress stops, any confirmation or touch pick in progress is dropped, and the microphone listens only for "resume" and "stop". A paused session still counts as running, so the headphones' play button resumes it. Resuming — by saying "resume" or "continue", the pause gesture or the play button — asks the current question again, with its automatic repeat and "Sorry?" count reset. If the question had already been answered (the pause came during feedback), resuming goes on to the next question instead. A session paused for 10 minutes in a row ends.
 
 ## Decisions & Alternatives
 

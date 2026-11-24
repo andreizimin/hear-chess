@@ -48,6 +48,7 @@ Design: `session-design.md`
 - [x] **SESSION-CONF-003**: When the player says no, or swipes left, to a candidate and another candidate remains, the session shall ask about the next candidate.
 - [x] **SESSION-CONF-004**: When the player says no, or swipes left, to the last candidate, the session shall say "Say it again?" and return to listening.
 - [x] **SESSION-CONF-005**: While confirming, the session shall ignore answer input other than yes or no to the candidate (a spoken or touched exercise answer is not taken), while still accepting repeat, I don't know, pause and stop.
+- [x] **SESSION-CONF-006**: When a reply to a candidate is not understood while confirming, the session shall say "Sorry?" and keep asking about the same candidate.
 
 ## Feedback
 
@@ -66,5 +67,6 @@ Design: `session-design.md`
 - [x] **SESSION-PAUSE-001**: When the player says "pause", makes the pause gesture, or the headphones' play/pause command arrives during a session that is not paused, the session shall pause at once.
 - [x] **SESSION-PAUSE-002**: When an audio interruption begins or headphones disconnect during a session, the session shall pause at once.
 - [x] **SESSION-PAUSE-003**: When the session pauses, it shall stop any speech in progress, drop any confirmation or touch pick in progress, and listen only for "resume" and "stop".
-- [x] **SESSION-PAUSE-004**: When a paused session is resumed (by saying "resume" or "continue", the pause gesture, or the headphones' play/pause command), the session shall ask the current exercise's question again, and reset that exercise's automatic repeat and "Sorry?" count.
+- [x] **SESSION-PAUSE-004**: When a paused session is resumed (by saying "resume" or "continue", the pause gesture, or the headphones' play/pause command), the session shall ask the current (unanswered) exercise's question again, and reset that exercise's automatic repeat and "Sorry?" count.
+- [x] **SESSION-PAUSE-006**: When a session paused while giving feedback on an answered exercise is resumed, the session shall go on to the next exercise (or end, if the session clock has reached 7 minutes) instead of asking the answered question again.
 - [x] **SESSION-PAUSE-005**: While a session is paused, the session shall count as running, so the headphones' play/pause command resumes it rather than asking "Start training?".

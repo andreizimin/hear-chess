@@ -547,7 +547,8 @@ public final class SessionEngine {
 
     // MARK: Confirming
 
-    // @spec SESSION-CONF-001, SESSION-CONF-002, SESSION-CONF-003, SESSION-CONF-004, SESSION-CONF-005, TOUCH-012
+    // @spec SESSION-CONF-001, SESSION-CONF-002, SESSION-CONF-003, SESSION-CONF-004, SESSION-CONF-005,
+    //       SESSION-CONF-006, TOUCH-012
     private func confirming(_ event: SessionEvent, _ t: Double) -> [Effect] {
         switch event {
         case .speechFinished:
@@ -690,6 +691,7 @@ public final class SessionEngine {
         }
     }
 
+    // @spec SESSION-PAUSE-006
     private func resume(_ t: Double) -> [Effect] {
         pausedDuringExercise += t - pausedAt
         if clockTotal > 0 || pausedFrom != .starting { clockRunningSince = t }
