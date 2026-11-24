@@ -28,7 +28,7 @@ public struct Allowed: Hashable, Sendable {
     /// While paused: only resume and stop.
     public static let paused = Allowed(answerKind: nil, commands: [.resume, .stop])
 
-    /// Confirming a candidate or "Start training?": yes or no only.
+    /// "Start training?": yes or no only.
     public static let yesOrNo = Allowed(answerKind: .yesOrNo, commands: [])
 }
 
@@ -48,21 +48,224 @@ public enum Hearing: Hashable, Sendable {
 }
 
 public enum SpokenChess {
+    // MARK: Output
+
     /// How each file letter is spelled so the speech engine says its name.
-    public static var letterPronunciation: [Character: String] { [:] }
+    // @spec SPOKEN-OUT-002
+    public static var letterPronunciation: [Character: String] {
+        ["a": "ay", "b": "bee", "c": "cee", "d": "dee", "e": "ee", "f": "ef", "g": "gee", "h": "aitch"]
+    }
+
+    static let numberWords = ["one", "two", "three", "four", "five", "six", "seven", "eight"]
 
     /// "ee four" for e4.
-    public static func speak(_ square: Square) -> String { "" }
+    // @spec SPOKEN-OUT-001
+    public static func speak(_ square: Square) -> String {
+        "\(letterPronunciation[square.fileLetter]!) \(numberWords[square.rank])"
+    }
+
+    static func spokenFile(_ file: Int) -> String { letterPronunciation[Array("abcdefgh")[file]]! }
+    static func spokenRank(_ rank: Int) -> String { numberWords[rank] }
+
+    static func directionWords(_ d: Direction) -> String {
+        switch d {
+        case .up: "up"
+        case .down: "down"
+        case .right: "right"
+        case .left: "left"
+        case .upRight: "up-right"
+        case .upLeft: "up-left"
+        case .downRight: "down-right"
+        case .downLeft: "down-left"
+        }
+    }
+
+    static func sentence(_ text: String) -> String {
+        guard let first = text.first else { return text }
+        return first.uppercased() + text.dropFirst()
+    }
 
     /// The words spoken for a prompt.
-    public static func text(for prompt: Prompt) -> String { "" }
+    // @spec SPOKEN-OUT-003
+    public static func text(for prompt: Prompt) -> String {
+        switch prompt {
+        case let .squareColour(s):
+            return sentence("\(speak(s)). Light or dark?")
+        case let .direction(from, steps):
+            let parts = steps.map { "\(numberWords[$0.count - 1]) \(directionWords($0.direction))" }
+            return sentence("\(parts.joined(separator: ", ")) from \(speak(from))?")
+        case let .sameDiagonal(a, b):
+            return sentence("\(speak(a)) and \(speak(b)). Same diagonal?")
+        case let .diagonalEnd(from, direction):
+            return sentence("from \(speak(from)), \(directionWords(direction)) to the edge?")
+        case let .longDiagonal(d, s):
+            return sentence("\(speak(d.start)) to \(speak(d.end)). Is \(speak(s)) on it?")
+        }
+    }
 
-    /// The words spoken after a wrong answer, such as "ef six is dark" or "gee four".
-    public static func correction(for exercise: Exercise) -> String { "" }
+    /// The words spoken after a wrong answer, such as "Ef six is dark." or "Gee four."
+    // @spec SPOKEN-OUT-004
+    public static func correction(for exercise: Exercise) -> String {
+        guard let answer = exercise.correction else { return "" }
+        switch (answer, exercise.prompt) {
+        case let (.colour(c), .squareColour(s)):
+            return sentence("\(speak(s)) is \(c.rawValue).")
+        case let (.square(s), _):
+            return sentence("\(speak(s)).")
+        case (.yes, .sameDiagonal): return "Yes, same diagonal."
+        case (.no, .sameDiagonal): return "No, not the same diagonal."
+        case (.yes, .longDiagonal): return "Yes, it's on it."
+        case (.no, .longDiagonal): return "No, it's not on it."
+        case (.yes, _): return "Yes."
+        case (.no, _): return "No."
+        case let (.colour(c), _): return sentence("\(c.rawValue).")
+        }
+    }
+
+    /// The question asked to confirm an unsure candidate, such as "Bee four?" or "Dark?".
+    public static func candidate(_ answer: Answer) -> String {
+        switch answer {
+        case let .square(s): sentence("\(speak(s))?")
+        case let .colour(c): sentence("\(c.rawValue)?")
+        case .yes: "Yes?"
+        case .no: "No?"
+        }
+    }
+
+    // MARK: Input
+
+    /// One recognized item in a transcription.
+    enum Item: Hashable {
+        case filler
+        case unknown
+        case colour(SquareColour)
+        case yes
+        case no
+        case command(Command)
+        case file(Int)
+        case rank(Int)
+        case square(Square)
+    }
+
+    // @spec SPOKEN-IN-002, SPOKEN-IN-003, SPOKEN-IN-005, SPOKEN-IN-006, SPOKEN-IN-007, SPOKEN-IN-008, SPOKEN-IN-009
+    static let lexicon: [String: Item] = {
+        var l: [String: Item] = [:]
+        for w in ["um", "uh", "er", "erm", "it's", "i think"] { l[w] = .filler }
+        for w in ["light", "white"] { l[w] = .colour(.light) }
+        for w in ["dark", "black"] { l[w] = .colour(.dark) }
+        for w in ["yes", "yeah", "yep", "correct", "same"] { l[w] = .yes }
+        for w in ["no", "nope", "different", "not the same", "not same", "not correct"] { l[w] = .no }
+        for w in ["repeat", "again"] { l[w] = .command(.repeat) }
+        for w in ["skip", "i don't know", "i dont know", "not sure", "pass"] { l[w] = .command(.dontKnow) }
+        l["pause"] = .command(.pause)
+        for w in ["resume", "continue"] { l[w] = .command(.resume) }
+        l["stop"] = .command(.stop)
+        let fileWords: [[String]] = [
+            ["a", "ay", "hey", "alpha", "anton"],
+            ["b", "bee", "be", "bravo", "berta"],
+            ["c", "see", "sea", "cee", "charlie", "cäsar", "caesar"],
+            ["d", "dee", "delta", "dora"],
+            ["e", "ee", "echo", "emil"],
+            ["f", "ef", "foxtrot", "friedrich"],
+            ["g", "gee", "jee", "golf", "gustav"],
+            ["h", "aitch", "age", "hotel", "heinrich"],
+        ]
+        for (file, words) in fileWords.enumerated() { for w in words { l[w] = .file(file) } }
+        let rankWords: [[String]] = [
+            ["1", "one", "won"], ["2", "two", "to", "too"], ["3", "three"], ["4", "four", "for", "fore"],
+            ["5", "five"], ["6", "six"], ["7", "seven"], ["8", "eight", "ate"],
+        ]
+        for (rank, words) in rankWords.enumerated() { for w in words { l[w] = .rank(rank) } }
+        l["before"] = .square(Square(unchecked: 1, 3))
+        return l
+    }()
+
+    static let longestPhrase = lexicon.keys.map { $0.split(separator: " ").count }.max() ?? 1
+
+    static func tokens(_ text: String) -> [String] {
+        let cleaned = text.lowercased().map { c -> Character in
+            c.isLetter || c.isNumber || c == "'" || c == "’" ? (c == "’" ? "'" : c) : " "
+        }
+        return String(cleaned).split(separator: " ").map(String.init)
+    }
+
+    /// Splits a transcription into items, matching the longest listed phrase first.
+    // @spec SPOKEN-IN-011
+    static func items(_ text: String) -> [Item] {
+        let words = tokens(text)
+        var result: [Item] = []
+        var i = 0
+        while i < words.count {
+            var matched = false
+            for length in stride(from: min(longestPhrase, words.count - i), through: 1, by: -1) {
+                let phrase = words[i..<(i + length)].joined(separator: " ")
+                if let item = lexicon[phrase] {
+                    result.append(item)
+                    i += length
+                    matched = true
+                    break
+                }
+            }
+            if !matched {
+                result.append(Square(name: words[i]).map(Item.square) ?? .unknown)
+                i += 1
+            }
+        }
+        return result.filter { $0 != .filler }
+    }
 
     /// Reads one transcription against what is allowed.
-    public static func read(_ transcription: String, allowed: Allowed) -> Reading { .nothing }
+    // @spec SPOKEN-IN-001, SPOKEN-IN-004, SPOKEN-IN-010
+    public static func read(_ transcription: String, allowed: Allowed) -> Reading {
+        let list = items(transcription)
+        var answers: [Answer] = []
+        var commands: [Command] = []
+        for (index, item) in list.enumerated() {
+            switch item {
+            case let .command(c) where allowed.commands.contains(c):
+                commands.append(c)
+            case let .colour(c) where allowed.answerKind == .lightOrDark:
+                answers.append(.colour(c))
+            case .yes where allowed.answerKind == .yesOrNo:
+                answers.append(.yes)
+            case .no where allowed.answerKind == .yesOrNo:
+                answers.append(.no)
+            case let .square(s) where allowed.answerKind == .square:
+                answers.append(.square(s))
+            case let .file(f) where allowed.answerKind == .square:
+                if index + 1 < list.count, case let .rank(r) = list[index + 1] {
+                    answers.append(.square(Square(unchecked: f, r)))
+                }
+            default:
+                break
+            }
+        }
+        if !commands.isEmpty && !answers.isEmpty { return .nothing }
+        if let c = commands.first { return Set(commands).count == 1 ? .command(c) : .nothing }
+        if let a = answers.first { return Set(answers).count == 1 ? .answer(a) : .nothing }
+        return .nothing
+    }
 
     /// Reads the recognizer's alternatives, best first.
-    public static func hear(_ alternatives: [String], allowed: Allowed) -> Hearing { .notUnderstood }
+    // @spec SPOKEN-CERT-001, SPOKEN-CERT-002, SPOKEN-CERT-003, SPOKEN-CERT-004,
+    //       SPOKEN-CERT-005, SPOKEN-CERT-006, SPOKEN-CERT-007
+    public static func hear(_ alternatives: [String], allowed: Allowed) -> Hearing {
+        let readings = alternatives.map { read($0, allowed: allowed) }
+        guard let best = readings.first else { return .notUnderstood }
+        if case let .command(c) = best { return .command(c) }
+
+        var answers: [Answer] = []
+        for reading in readings {
+            if case let .answer(a) = reading, !answers.contains(a) { answers.append(a) }
+        }
+
+        if allowed.answerKind == .yesOrNo {
+            if case let .answer(a) = best, answers.count == 1 { return .understood(a) }
+            return .notUnderstood
+        }
+        if case let .answer(a) = best {
+            return answers.count == 1 ? .understood(a) : .unsure(Array(answers.prefix(3)))
+        }
+        return answers.isEmpty ? .notUnderstood : .unsure(Array(answers.prefix(3)))
+    }
 }

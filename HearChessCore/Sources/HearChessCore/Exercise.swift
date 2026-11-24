@@ -86,10 +86,25 @@ public struct Exercise: Hashable, Codable, Sendable {
 
     /// Two exercises with the same content key ask the same question
     /// (same drill, question type, squares and offset, squares in any order).
-    public var contentKey: String { "" }
+    // @spec EX-EMPTY-003
+    public var contentKey: String {
+        let body: String
+        switch prompt {
+        case let .squareColour(s): body = "colour:\(s.name)"
+        case let .direction(from, steps): body = "direction:\(from.name):" + steps.map { "\($0.count)\($0.direction.rawValue)" }.joined(separator: ",")
+        case let .sameDiagonal(a, b): body = "same:" + [a.name, b.name].sorted().joined(separator: ",")
+        case let .diagonalEnd(from, direction): body = "end:\(from.name):\(direction.rawValue)"
+        case let .longDiagonal(d, s): body = "long:\(d.start.name)\(d.end.name):\(s.name)"
+        }
+        return "\(drill.rawValue)|\(body)"
+    }
 
     /// Right when the answer is one of the correct answers; nil ("I don't know") is wrong.
-    public func check(_ answer: Answer?) -> Bool { false }
+    // @spec EX-EMPTY-005
+    public func check(_ answer: Answer?) -> Bool {
+        guard let answer else { return false }
+        return correctAnswers.contains(answer)
+    }
 }
 
 /// A deterministic random source (SplitMix64), so a seed always gives the same exercises.

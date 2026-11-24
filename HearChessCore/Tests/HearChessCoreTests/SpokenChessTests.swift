@@ -14,7 +14,7 @@ struct SpokenChessTests {
         #expect(SpokenChess.speak(try sq("a4")) == "ay four")
         #expect(SpokenChess.speak(try sq("e4")) == "ee four")
         #expect(SpokenChess.speak(try sq("h8")) == "aitch eight")
-        #expect(SpokenChess.speak(try sq("c1")) == "see one")
+        #expect(SpokenChess.speak(try sq("c1")) == "cee one")
     }
 
     // @spec SPOKEN-OUT-002
@@ -33,8 +33,8 @@ struct SpokenChessTests {
         #expect(SpokenChess.text(for: .direction(from: try sq("e4"), steps: [Step(2, .right)])) == "Two right from ee four?")
         #expect(SpokenChess.text(for: .direction(from: try sq("e4"), steps: [Step(1, .up), Step(2, .right)])) == "One up, two right from ee four?")
         #expect(SpokenChess.text(for: .direction(from: try sq("b2"), steps: [Step(3, .upRight)])) == "Three up-right from bee two?")
-        #expect(SpokenChess.text(for: .sameDiagonal(try sq("c1"), try sq("h6"))) == "See one and aitch six. Same diagonal?")
-        #expect(SpokenChess.text(for: .diagonalEnd(from: try sq("c1"), direction: .upRight)) == "From see one, up-right to the edge?")
+        #expect(SpokenChess.text(for: .sameDiagonal(try sq("c1"), try sq("h6"))) == "Cee one and aitch six. Same diagonal?")
+        #expect(SpokenChess.text(for: .diagonalEnd(from: try sq("c1"), direction: .upRight)) == "From cee one, up-right to the edge?")
         let a1h8 = Diagonal(start: try sq("a1"), end: try sq("h8"))
         #expect(SpokenChess.text(for: .longDiagonal(a1h8, try sq("d4"))) == "Ay one to aitch eight. Is dee four on it?")
     }

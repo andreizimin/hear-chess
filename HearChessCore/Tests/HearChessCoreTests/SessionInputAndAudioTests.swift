@@ -1,3 +1,4 @@
+import Foundation
 import Testing
 @testable import HearChessCore
 
@@ -313,6 +314,17 @@ struct SessionInputAndAudioTests {
         let saved = saves(fx).last
         #expect(saved?.sessions.count == 1)
         #expect(saved?.sessions.first?.right == 1 && saved?.sessions.first?.total == 1)
+    }
+
+    // @spec STORE-002
+    @Test func summaryRecordsTheWallClockStart() {
+        let start = Date(timeIntervalSince1970: 1_900_000_000)
+        let engine = SessionEngine(progress: Progress(introductionGiven: true), voiceCheck: { true }, seedSource: { 1 }, wallClock: { start })
+        _ = engine.handle(.gesture(.tap), at: 50)
+        let fx = engine.handle(.gesture(.threeFingerSwipeDown), at: 80)
+        let summary = fx.compactMap { if case let .sessionEnded(s) = $0 { s } else { nil } }.first
+        #expect(summary?.start == start)
+        #expect(summary.map { abs($0.unpausedSeconds - 30) < 0.001 } == true)
     }
 
     // The ladder chooses real exercises when no override is set.

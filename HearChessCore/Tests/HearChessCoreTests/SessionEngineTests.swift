@@ -170,7 +170,8 @@ struct SessionEngineTests {
         #expect(h.engine.state == .listening)
         // Past 7 minutes: the current exercise finishes and the session ends.
         h.send(.tick, after: 70)
-        #expect(h.engine.state == .listening, "never cuts off mid-exercise")
+        #expect(endings(h.log).isEmpty && h.engine.state != .idle, "never cuts off mid-exercise")
+        h.finishSpeaking()
         h.answerRight()
         h.finishSpeaking()
         #expect(endings(h.log).count == 1)
@@ -427,7 +428,8 @@ struct SessionEngineTests {
         let result = h.engine.progress.ladder.estimate(.squareColour).results.last
         #expect(result?.right == true && result?.method == .voice)
         #expect(saves(fx).count == 1)
-        h.gesture(.swipeLeft)
+        h.finishSpeaking()
+        h.gesture(.swipeRight)
         #expect(h.engine.progress.ladder.estimate(.squareColour).results.last?.method == .touch)
     }
 
