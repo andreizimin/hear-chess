@@ -24,7 +24,7 @@ Exercises are part of the training core. They are generated from a seeded random
 
 An answer is right when it is one of the exercise's correct answers, and wrong otherwise. The time taken to answer is measured by the session, and what a result means for the player's skill — including how "I don't know" is counted — is the ladder's concern.
 
-Each family generates an exercise for a given drill and level from a seeded random source. The session picks a fresh random seed for every session and records it, so any session can be replayed. Generation is given the question asked just before, whichever drill it came from, and never produces an identical question. This parent owns no requirements of its own; each family's specs state these rules for that family.
+Each family generates an exercise for a given drill and level from a seeded random source. The session picks a fresh random seed for every session and records it, so any session can be replayed. Generation is given the question asked just before, whichever drill it came from, and never produces a question with the same content (the same drill, question type, squares and offset, with the squares in any order). The seeded source, drill, level and previous question together determine the exercise. This parent owns no requirements of its own; each family's specs state these rules for that family.
 
 ## Children
 

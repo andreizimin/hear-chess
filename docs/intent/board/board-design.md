@@ -34,7 +34,7 @@ There are eight directions, named from White's side of the board:
 | down-right | +1 | −1 |
 | down-left | −1 | −1 |
 
-"Up" is towards rank 8 and "right" is towards the h-file. Moving from a square by a number of steps in a direction, or by any file and rank offset (such as one up and two right), gives either a square or nothing when the result is off the board.
+"Up" is towards rank 8 and "right" is towards the h-file. Moving from a square by a number of steps (one or more) in a direction, or by any file and rank offset (such as one up and two right), gives either a square or nothing when the result is off the board. A step count of zero or less gives nothing. Creating or moving to a square that does not exist simply gives no square; it is not an error.
 
 ## Lines and diagonals
 
@@ -42,7 +42,7 @@ Every square lies on one file, one rank and two diagonals: one running up-right 
 
 The board answers:
 
-- the two diagonals through a square;
+- the two whole diagonals through a square, edge to edge (for d4: a1–h8 and g1–a7);
 - whether two squares share a diagonal, a file or a rank (a square shares every line with itself);
 - the end square reached by travelling from a square in a diagonal direction until the edge, or nothing when the square is already at the edge in that direction (a1 down-left, c1 down-right);
 - the length of a diagonal (1 to 8 squares).

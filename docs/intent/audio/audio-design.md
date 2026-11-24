@@ -11,15 +11,15 @@ Audio keeps training going when the phone is in a pocket: with the screen locked
 
 ## Audio session
 
-When voice input is available, the app's audio session plays and records at the same time during a session, routes to headphones when connected and to the speaker otherwise, and supports Bluetooth headsets with a microphone. When voice input is off, the session only plays, so Bluetooth headphones stay in their normal high-quality mode. Other apps' audio (music, podcasts) is paused while a session runs and allowed to resume when it ends.
+When voice input is available, the app's audio session plays and records at the same time during a session, outputs to wired or Bluetooth headphones when connected and to the phone's loudspeaker otherwise, and uses a Bluetooth headset's microphone when it has one. When voice input is off, the session only plays, so Bluetooth headphones stay in their normal high-quality mode. Other apps' audio (music, podcasts) is paused while a session runs, and the app releases the audio as soon as a session ends so they can resume straight away.
 
 ## Locked screen and background
 
 The app declares background audio, so a running session keeps going when the screen locks or the player switches app, with speaking and listening both continuing.
 
-A paused session stays alive in the background for up to 10 minutes and then ends, as the session design says. If iOS suspends the app while it is paused, the session's state is kept, and the session picks up where it was when the app runs again within those 10 minutes.
+A paused session stays alive in the background for up to 10 minutes and then ends, as the session design says. If iOS suspends the app while it is paused, the session's state is kept. When the app runs again, the session is restored, still paused. If it has by then been paused for 10 minutes, it ends instead, and its summary is saved without being spoken.
 
-Outside a session the app does no background work. For one minute after a session ends it remains the lock screen's playing app, so a headphone press can start another session (after the "Start training?" confirmation); after that it gives up the playing-app role, and headphone presses go to other apps again.
+Outside a session the app does no background work, with one exception. For one minute after a session ends it remains the lock screen's playing app, so a headphone press can start another session after the "Start training?" confirmation. After that it gives up the playing-app role, and headphone presses go to other apps again.
 
 ## Headphone and lock-screen controls
 
@@ -35,7 +35,7 @@ With no session running, play starts the "Start training?" confirmation.
 
 ## Interruptions and route changes
 
-A phone call, alarm or other interruption pauses the session. When the interruption ends the session stays paused until the player resumes it, and resuming asks the current question again, dropping any confirmation that was in progress. Disconnecting headphones pauses the session at once, so it never suddenly speaks out loud. Reconnecting them leaves the session paused.
+A phone call, alarm or other interruption pauses the session, which drops any confirmation in progress. When the interruption ends the session stays paused until the player resumes it, and resuming asks the current question again. Disconnecting headphones pauses the session at once, so it never suddenly speaks out loud. Reconnecting them leaves the session paused.
 
 ## Decisions & Alternatives
 

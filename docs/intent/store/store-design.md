@@ -12,7 +12,7 @@ The store keeps the player's progress on the phone: the ladder's skill estimates
 ## What is stored
 
 - The ladder's skill estimate for every drill: its level and its recent results at that level (at most 20, as the ladder keeps them).
-- One summary for each of the last 100 sessions: date, length, seed, right and total answers, and drills that moved level. A summary is written whenever a session ends, however it ended. A session cut short by the app being force-quit has no summary, but its answered exercises are already saved.
+- One summary for each of the last 100 sessions: start date and time, unpaused length, seed, right and total answers ("I don't know" and skips count as answers), and drills that moved level. A summary is written whenever a session ends, however it ended. A session cut short by the app being force-quit has no summary, but its answered exercises are already saved.
 - Whether the first-session introduction has been given, saved as soon as it has.
 
 The data structures are defined in the training core and are encodable, so saving and loading can be tested without a device.
@@ -25,8 +25,9 @@ It is loaded when the app starts:
 
 - **Same version** — used as is.
 - **Older version** — converted to the current format and saved in it.
-- **Newer version** than the app understands — left untouched. The app trains with fresh progress but saves nothing for as long as it runs, and says so once at the start of each session.
-- **Unreadable** — renamed with the date and time and kept, and the app starts with fresh progress. At most three such copies are kept; the oldest is deleted first.
+- **Newer version** than the app understands — left untouched. The app trains with fresh progress but saves nothing at all for as long as it runs (no answers, summaries or introduction flag), and says so once at the start of each session.
+- **Unreadable** (the file opens but its contents cannot be decoded) — renamed with the date and time and kept, and the app starts with fresh progress. Whenever a copy is kept and more than three exist, the oldest are deleted.
+- **Cannot be opened** (for example, the phone's protected data is not available yet after a restart) — left untouched; nothing is saved until it has been loaded, which is tried again once the data becomes available.
 
 A drill that has no skill estimate in the file starts at level 1.
 

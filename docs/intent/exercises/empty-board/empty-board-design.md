@@ -9,7 +9,7 @@ prefix: EX-EMPTY
 
 The empty board is the first rung: knowing where every square is and what it looks like, with no pieces at all. Training guides agree it comes first and that diagonals are its hardest part. These drills aim at a picture of the board, not at rules for working answers out, so they rely on the player answering quickly: the ladder rewards fast answers, which favours seeing over calculating.
 
-All questions are asked from White's side, using the board's direction names (up is towards rank 8).
+All questions are asked from White's side, using the board's direction names (up is towards rank 8). Random choices are made independently for each question, and squares are drawn uniformly from those a level allows. Directions offsets at levels 1 to 3 are always in a single direction.
 
 ## Drills
 

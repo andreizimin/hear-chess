@@ -13,7 +13,7 @@ Two principles shape it. Spoken output sounds like a chess player talking, short
 
 ## Speaking squares and prompts
 
-A square is spoken as its file letter and rank number: "e four". Output text is written so the speech engine pronounces each letter as a letter. In particular "a" must not be read as the article "uh", and the text for each letter is chosen so it is pronounced reliably.
+A square is spoken as its file letter and rank number: "e four". Output text spells each letter the way it should be pronounced, taken from one table of letter pronunciations ("ay four" for a4), so the speech engine says each letter as a letter. In particular "a" must never be read as the article "uh".
 
 Prompts are short sentences built from templates, one per kind of question. For example:
 
@@ -26,7 +26,7 @@ Feedback is shorter still: a wrong answer is followed by the correct one in a fe
 
 ## Understanding answers
 
-The speech recognizer gives a few alternative transcriptions of what it heard. Spoken chess reads each alternative and tries to turn it into an answer of the kind the current question expects. It considers only that kind: during a light-or-dark question, "e four" is not an answer and "dark" is.
+The speech recognizer gives a few alternative transcriptions of what it heard. Spoken chess reads each alternative and tries to turn it into one of the answers or commands the caller allows at that moment. During an exercise that is answers of the question's kind plus the exercise commands: during a light-or-dark question, "e four" is not an answer and "dark" is. At other moments the caller names what is allowed, such as only "resume" and "stop" while paused, or yes and no for "Start training?".
 
 Answer kinds and the words accepted for them:
 
@@ -39,7 +39,7 @@ Answer kinds and the words accepted for them:
 
 File words include the letter itself and the words it is commonly heard as ("ay", "hey", "bee", "be", "see", "sea", "dee", "ee", "ef", "gee", "jee", "aitch", "age"), the NATO alphabet (alpha, bravo, charlie, delta, echo, foxtrot, golf, hotel), and the German chess alphabet (Anton, Berta, Cäsar or Caesar, Dora, Emil, Friedrich, Gustav, Heinrich). Rank words include the digits, the number words and their common homophones ("won", "to", "too", "for", "fore", "ate"). Whole-word homophones of a square ("before" for b four) are accepted too. These lists are a starting set, extended as real misrecognitions are found.
 
-A transcription reads as one answer only when everything in it that is an answer word agrees: "dark, dark" reads as dark, but "light no dark" or "yes not the same" reads as nothing. Filler words ("um", "uh", "it's", "I think") are ignored.
+Phrases are matched longest first, so "not the same" is read only as no, never also as "same". A square needs its file word immediately followed by its rank word. A transcription reads as one answer only when everything in it that is an answer word agrees: "dark, dark" reads as dark, but "light no dark" reads as nothing, and so does one that mixes a command and an answer ("repeat e four"). Filler words ("um", "uh", "it's", "I think") are ignored.
 
 ## Certainty
 
@@ -47,10 +47,10 @@ The recognizer ranks its alternatives, best first. The result of reading them is
 
 - **Command** — the best alternative reads as a command. Commands are recognized only from the best alternative, so a lower-ranked "stop" never interrupts an answer.
 - **Understood** — the best alternative reads as an answer, and no other alternative reads as a different answer.
-- **Unsure** — the alternatives read as two or more different answers (for example "b four" and "d four"), or the best alternative reads as nothing and a lower-ranked one reads as an answer. The candidates are listed in the recognizer's order, at most three.
+- **Unsure** — the alternatives read as two or more different answers (for example "b four" and "d four"), or the best alternative reads as nothing and a lower-ranked one reads as an answer. The candidates are listed in the recognizer's order, at most three, and there may be only one.
 - **Not understood** — nothing else applies.
 
-For yes-or-no questions, an unsure result between yes and no counts as not understood, since asking "yes?" to settle it would be confusing. Spoken chess never picks between candidates.
+These are checked in that order: a command first, then understood, then unsure. Yes-or-no questions are never unsure: they are understood only when the best alternative reads as yes or no and no alternative reads as the other, and otherwise not understood, since confirming with "yes?" would be confusing. Spoken chess never picks between candidates.
 
 ## Decisions & Alternatives
 

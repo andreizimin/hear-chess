@@ -5,10 +5,11 @@ Design: `empty-board-design.md`
 ## All empty-board drills
 
 - [ ] **EX-EMPTY-001**: The empty-board drills shall be square colour, directions and diagonals, each with its own levels.
-- [ ] **EX-EMPTY-002**: When generating an empty-board exercise from a given seed, drill and level, the generator shall always produce the same exercise.
-- [ ] **EX-EMPTY-003**: When generating an empty-board exercise, the generator shall never produce a question identical to the previous question asked in the session, whichever drill it came from.
+- [ ] **EX-EMPTY-002**: When generating an empty-board exercise, the generator shall take as inputs a seeded random source, the drill, the level and the previous question asked in the session (if any), and shall always produce the same exercise for the same inputs.
+- [ ] **EX-EMPTY-003**: When generating an empty-board exercise, the generator shall never produce a question with the same content as the previous question asked in the session (the same drill, question type, squares and offset, in any order of squares), whichever drill the previous question came from.
 - [ ] **EX-EMPTY-004**: The empty-board drills shall ask every question from White's side, using the board's direction names.
 - [ ] **EX-EMPTY-005**: When checking an empty-board answer, the drill shall mark it right when it is one of the exercise's correct answers, and wrong otherwise.
+- [ ] **EX-EMPTY-006**: Where an empty-board drill draws a random choice with a stated probability or from a set of squares, it shall draw independently for each question, and uniformly over the allowed squares unless a probability is stated.
 
 ## Square colour drill
 
@@ -21,9 +22,9 @@ Design: `empty-board-design.md`
 
 - [ ] **EX-EMPTY-DIR-001**: The directions drill shall give a starting square and an offset and ask for the square reached, with a square as the answer kind ("Two right from e four?").
 - [ ] **EX-EMPTY-DIR-002**: When generating a directions exercise, the drill shall choose the starting square and offset so the answer is on the board.
-- [ ] **EX-EMPTY-DIR-003**: At directions level 1, the drill shall use one step up, down, left or right.
-- [ ] **EX-EMPTY-DIR-004**: At directions level 2, the drill shall use two or three steps up, down, left or right.
-- [ ] **EX-EMPTY-DIR-005**: At directions level 3, the drill shall use one to three steps up-right, up-left, down-right or down-left.
+- [ ] **EX-EMPTY-DIR-003**: At directions level 1, the drill shall use one step in a single direction: up, down, left or right.
+- [ ] **EX-EMPTY-DIR-004**: At directions level 2, the drill shall use two or three steps in a single direction: up, down, left or right.
+- [ ] **EX-EMPTY-DIR-005**: At directions level 3, the drill shall use one to three steps in a single direction: up-right, up-left, down-right or down-left.
 - [ ] **EX-EMPTY-DIR-006**: At directions level 4, the drill shall use a knight's jump: one step up or down with two steps left or right, or two steps up or down with one step left or right.
 - [ ] **EX-EMPTY-DIR-007**: When asking a directions level-4 question, the drill shall speak the up-or-down part first ("one up, two right").
 
@@ -33,7 +34,7 @@ Design: `empty-board-design.md`
 - [ ] **EX-EMPTY-DIAG-002**: A same-diagonal question shall give two different squares and ask whether they share a diagonal, with yes or no as the answer kind ("c one and h six. Same diagonal?").
 - [ ] **EX-EMPTY-DIAG-003**: When generating a same-diagonal question, the drill shall make the answer yes with probability one half.
 - [ ] **EX-EMPTY-DIAG-004**: When generating a same-diagonal question whose answer is no, the drill shall use two squares of the same colour.
-- [ ] **EX-EMPTY-DIAG-005**: A diagonal-end question shall give a square and a diagonal direction and ask for the last square before the edge, with a square as the answer kind ("From c one, up-right to the edge?").
+- [ ] **EX-EMPTY-DIAG-005**: A diagonal-end question shall give a square and a diagonal direction and ask for the edge square where that diagonal meets the edge of the board, with a square as the answer kind ("From c one, up-right to the edge?" — answer h6).
 - [ ] **EX-EMPTY-DIAG-006**: When generating a diagonal-end question, the drill shall use only directions in which at least one square can be travelled from the starting square.
 - [ ] **EX-EMPTY-DIAG-007**: A long-diagonals question shall name one of the two long diagonals (a1–h8 or h1–a8) and a square, and ask whether the square is on it, with yes or no as the answer kind ("a one to h eight. Is d four on it?").
 - [ ] **EX-EMPTY-DIAG-008**: When generating a long-diagonals question, the drill shall make the answer yes with probability one half and never ask about either end square of the named diagonal.

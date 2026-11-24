@@ -11,23 +11,29 @@ Voice is the app's mouth and ears: iOS speech synthesis for output and iOS speec
 
 ## Speaking
 
-Speech uses `AVSpeechSynthesizer` with the best installed English voice (an enhanced or premium voice when present), at 90% of the default rate so square names are easy to follow. Voice reports when an utterance finishes, so the session knows when to start listening. Speaking can be stopped immediately, for pause and stop.
+Speech uses `AVSpeechSynthesizer` with the highest-quality installed English voice (premium, then enhanced, then default), preferring the phone's own English variant among voices of equal quality, at 0.9 times the framework's default rate so square names are easy to follow. Voice reports when an utterance finishes, so the session knows when to start listening. Speaking can be stopped immediately, for pause and stop.
 
 ## Listening
 
 Listening uses `SFSpeechRecognizer` for English with on-device recognition required, so it works offline and audio never leaves the phone. English is used whatever the phone's own language is.
 
-Each answer window is its own recognition request, given the words the current answer kind accepts as contextual hints so the recognizer favours chess words. Listening runs only while the session is listening or confirming; it is stopped while the app speaks.
+Voice listens in three situations, and never while the app itself is speaking:
 
-Voice decides an answer is finished after a short pause in speech (about 0.8 seconds). It then gives spoken chess the recognizer's alternative transcriptions, best first, together with the time the player started speaking, taken from the recognizer's timing of the first word. A result containing only filler is not understood.
+- while the session is listening for or confirming an answer;
+- while a session is paused, for "resume" and "stop" only;
+- while "Start training?" waits for confirmation, for yes or no.
 
-If a recognition request ends or fails while the session is still waiting for an answer, voice starts a new one without saying anything. After three failures in a row within one exercise, voice input is off for the rest of the session and the app says once that answers are by touch.
+Each listening window is its own recognition request, given the words allowed at that moment as contextual hints so the recognizer favours them.
+
+Voice decides an answer is finished after a short pause in speech (a setting, 0.8 seconds by default). It then gives spoken chess the recognizer's alternative transcriptions, best first, together with the recognizer's time for the first word. A result containing only filler is not understood.
+
+If a recognition request ends or fails while an answer is still awaited, voice starts a new one without saying anything. A request that ends because nobody spoke is normal. Only errors reported by the recognizer count as failures, and any recognized speech resets the count. After three failures in a row within one exercise, voice input is off for the rest of the session: the app says once that answers are by touch, and the touch-only behaviour, including keeping the screen awake, applies until the session ends. The next session checks again.
 
 ## Permissions and availability
 
-The app needs microphone and speech-recognition permission. It asks for them the first time it opens, before any session, after a one-sentence spoken explanation of why. This is the one step that needs the screen.
+The app needs microphone and speech-recognition permission. It asks for them the first time it opens, before any session, after a one-sentence spoken explanation of why. This is the one step that needs the screen, and taps do not start a session until it is finished.
 
-Voice input is off when either permission is refused or English on-device recognition is not available on the phone. The session then runs with touch only, and the introduction and the start of each session say so.
+At the start of every session, voice checks again whether both permissions are granted and English on-device recognition is available. If not, voice input is off for that session, it runs with touch only, and the start of the session says so.
 
 ## Decisions & Alternatives
 

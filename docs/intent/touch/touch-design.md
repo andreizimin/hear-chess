@@ -14,16 +14,16 @@ Touch lets the player answer without looking. The whole screen is one training s
 | Gesture | Meaning |
 |---|---|
 | Tap (no session running) | Start a session |
-| Swipe right | Light / yes |
-| Swipe left | Dark / no |
-| Swipe up or down | Move through choices when picking a square (below) |
+| Swipe right | Light / yes; while confirming, yes to the candidate |
+| Swipe left | Dark / no; while confirming, no to the candidate |
+| Swipe up or down | Start or move through a square pick (below) |
 | Double-tap | Choose the current choice when picking a square |
-| Two-finger tap | Repeat the question |
-| Long press | I don't know |
-| Two-finger double-tap | Pause or resume |
-| Three-finger swipe down | Stop the session |
+| Two-finger tap | Repeat the question (while listening or confirming) |
+| Long press | I don't know (while listening, confirming or picking) |
+| Two-finger double-tap | Pause or resume, at any point in a session |
+| Three-finger swipe down | Stop the session, at any point in a session |
 
-The introduction explains swipe right for light or yes and swipe left for dark or no; other gestures are described in the help. Gestures that mean nothing at the current moment are ignored. A two-finger tap is recognized only once a two-finger double-tap has been ruled out. During a session the app asks the system to defer its own edge gestures (Notification Center, Control Center, Home), so a swipe that starts near an edge still reaches the app first.
+The introduction explains swipe right for light or yes and swipe left for dark or no; other gestures are described in the help. Gestures that mean nothing at the current moment are ignored. A two-finger tap is recognized only once a two-finger double-tap has been ruled out. During a session the app asks the system to defer its own edge gestures (Notification Center, Control Center, Home), so a first swipe that starts near an edge reaches the app; iOS may still act on a second one.
 
 ## Picking a square
 
@@ -31,13 +31,13 @@ A square answer is picked in two steps, file then rank:
 
 1. The first swipe up or down starts the pick: the app says "file, e", and that swipe does not move the choice. Swiping up moves to the next file and swiping down to the previous one; each file letter is spoken as it is reached. At a and h the list stops, and a further swipe plays a short bump sound. A double-tap chooses the spoken file.
 2. The app says "rank, four" and the same is done for ranks 1 to 8.
-3. The chosen square is the answer, and is spoken back ("g four") as the answer is checked.
+3. The chosen square is the answer, taken directly without a confirmation step, and is spoken back ("g four") as the answer is checked.
 
 While picking, a two-finger tap repeats the question and starts the pick again, a long press means "I don't know", and left and right swipes are ignored. A voice answer that arrives during a pick is used and the pick is abandoned.
 
 ## Screen and lock
 
-When voice input is available, the screen locks as normal during a session, and the player answers by voice and the headphone controls. When voice input is off, the app keeps the screen awake, dimmed, for the length of a session so touch keeps working, and lets it lock normally again when the session ends.
+When voice input is available, the screen locks as normal during a session, and the player answers by voice and the headphone controls. When voice input is off, the app keeps the screen awake for the length of a session so touch keeps working, with its brightness lowered to the minimum, and when the session ends it restores the previous brightness and lets the screen lock normally again.
 
 ## Working with VoiceOver
 
