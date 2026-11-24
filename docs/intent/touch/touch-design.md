@@ -29,7 +29,7 @@ The introduction explains swipe right for light or yes and swipe left for dark o
 
 A square answer is picked in two steps, file then rank:
 
-1. The app says "file, e". Swiping up moves to the next file and swiping down to the previous one; each file letter is spoken as it is reached. At a and h the list stops, and a further swipe plays a short bump sound. A double-tap chooses the spoken file.
+1. The first swipe up or down starts the pick: the app says "file, e", and that swipe does not move the choice. Swiping up moves to the next file and swiping down to the previous one; each file letter is spoken as it is reached. At a and h the list stops, and a further swipe plays a short bump sound. A double-tap chooses the spoken file.
 2. The app says "rank, four" and the same is done for ranks 1 to 8.
 3. The chosen square is the answer, and is spoken back ("g four") as the answer is checked.
 

@@ -11,7 +11,7 @@ Voice is the app's mouth and ears: iOS speech synthesis for output and iOS speec
 
 ## Speaking
 
-Speech uses `AVSpeechSynthesizer` with the best installed English voice (an enhanced or premium voice when present), at a slightly slower rate than the default so square names are easy to follow. Voice reports when an utterance finishes, so the session knows when to start listening. Speaking can be stopped immediately, for pause and stop.
+Speech uses `AVSpeechSynthesizer` with the best installed English voice (an enhanced or premium voice when present), at 90% of the default rate so square names are easy to follow. Voice reports when an utterance finishes, so the session knows when to start listening. Speaking can be stopped immediately, for pause and stop.
 
 ## Listening
 
