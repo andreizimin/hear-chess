@@ -19,7 +19,7 @@ Design: `spoken-chess-design.md`
 - [ ] **SPOKEN-IN-006**: When reading a square answer, spoken chess shall accept as rank words the digits 1–8, the number words one to eight, and the homophones "won", "to", "too", "for", "fore" and "ate".
 - [ ] **SPOKEN-IN-007**: When reading a square answer, spoken chess shall read listed whole-word homophones of a square ("before" for b four) as that square.
 - [ ] **SPOKEN-IN-008**: Where commands are allowed, spoken chess shall read "repeat" and "again" as repeat; "skip", "I don't know", "not sure" and "pass" as I don't know; "pause" as pause; "resume" and "continue" as resume; and "stop" as stop.
-- [ ] **SPOKEN-IN-009**: When reading any transcription, spoken chess shall ignore filler words ("um", "uh", "it's", "I think").
+- [ ] **SPOKEN-IN-009**: When reading any transcription, spoken chess shall ignore filler words ("um", "uh", "it's", "I think") and any other word it does not know ("dark please" reads as dark), except that a word other than a filler between a file word and a rank word stops them reading as a square ("e and four" is not e4).
 - [ ] **SPOKEN-IN-010**: If a transcription contains answer words that disagree (such as "light no dark"), or both a command and an answer ("repeat e four"), then spoken chess shall read it as nothing.
 - [ ] **SPOKEN-IN-011**: When matching answer words, spoken chess shall match the longest listed phrase first, so "not the same" is read only as no and not also as "same".
 

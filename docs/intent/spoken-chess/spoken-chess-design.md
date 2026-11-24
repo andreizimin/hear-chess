@@ -39,7 +39,7 @@ Answer kinds and the words accepted for them:
 
 File words include the letter itself and the words it is commonly heard as ("ay", "hey", "bee", "be", "see", "sea", "dee", "ee", "ef", "gee", "jee", "aitch", "age"), the NATO alphabet (alpha, bravo, charlie, delta, echo, foxtrot, golf, hotel), and the German chess alphabet (Anton, Berta, Cäsar or Caesar, Dora, Emil, Friedrich, Gustav, Heinrich). Rank words include the digits, the number words and their common homophones ("won", "to", "too", "for", "fore", "ate"). Whole-word homophones of a square ("before" for b four) are accepted too. These lists are a starting set, extended as real misrecognitions are found.
 
-Phrases are matched longest first, so "not the same" is read only as no, never also as "same". A square needs its file word immediately followed by its rank word. A transcription reads as one answer only when everything in it that is an answer word agrees: "dark, dark" reads as dark, but "light no dark" reads as nothing, and so does one that mixes a command and an answer ("repeat e four"). Filler words ("um", "uh", "it's", "I think") are ignored.
+Phrases are matched longest first, so "not the same" is read only as no, never also as "same". A square needs its file word immediately followed by its rank word. A transcription reads as one answer only when everything in it that is an answer word agrees: "dark, dark" reads as dark, but "light no dark" reads as nothing, and so does one that mixes a command and an answer ("repeat e four"). Filler words ("um", "uh", "it's", "I think") and words spoken chess does not know are ignored ("dark please" reads as dark), except that any non-filler word between a file word and a rank word stops them reading as a square.
 
 ## Certainty
 

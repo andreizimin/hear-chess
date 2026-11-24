@@ -21,7 +21,7 @@ Design: `store-design.md`
 ## Loading
 
 - [ ] **STORE-LOAD-001**: When the app starts, the store shall load progress from the file.
-- [ ] **STORE-LOAD-002**: When the file has an older format version, the store shall convert it to the current format and save it.
+- [D] **STORE-LOAD-002**: When the file has an older format version, the store shall convert it to the current format and save it.
 - [ ] **STORE-LOAD-003**: When the file has a newer format version than the app understands, the store shall leave it untouched, start with fresh progress, and save nothing while the app runs, overriding every other rule that saves.
 - [ ] **STORE-LOAD-004**: While progress is not being saved because of a newer-version file, the app shall say so once at the start of each session.
 - [ ] **STORE-LOAD-005**: If the file can be read but its contents cannot be decoded, then the store shall rename it with the current date and time, keep it, and start with fresh progress.
