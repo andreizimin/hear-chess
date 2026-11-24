@@ -7,7 +7,11 @@ prefix: SESSION
 
 ## Context and Design Philosophy
 
-A session is one short training sitting: the app asks, the player answers, and the app moves on. The session ties the other parts together — it asks the ladder for an exercise, has spoken chess word it, speaks it through voice, listens through voice and touch at once, checks the answer and gives feedback. It lives in the iOS layer, but its flow is a state machine that can be driven and tested without real audio.
+A session is one short training sitting: the app asks, the player answers, and the app moves on. The session ties the other parts together — it asks the ladder for an exercise, has spoken chess word it, speaks it through voice, listens through voice and touch at once, checks the answer and gives feedback.
+
+## Session engine
+
+The session's flow is a state machine in the training core, the **session engine**. It has no iOS dependencies. It takes events in — taps and gestures, recognized speech and recognition errors, "speech finished", media commands, audio interruptions and headphone changes, and the passing of time — and returns effects: speak this text, stop speaking, listen for these answers and commands, stop listening, play a sound, keep the screen awake or not, set the audio mode, take or give up the lock screen's playing-app role, save progress, and report the session's end. The iOS layer turns real input into events and carries out the effects. Because the engine also decides what gestures, media commands and interruptions mean at each moment, those behaviours from the touch, audio and voice designs are tested through it too.
 
 A session should feel like a calm coach: it says only what is needed, waits as long as the player needs, and is easy to start and stop without looking.
 
@@ -72,6 +76,7 @@ Pause comes from saying "pause", the pause gesture, the headphones' play/pause b
 | Swipes while confirming | Right = yes, left = no to the candidate | Swipes keep their exercise meaning | The player is answering the question they just heard ("dark?"); a swipe that meant light instead would contradict it. |
 | Microphone while paused | On, for "resume" and "stop" only | Off while paused | Lets the player resume hands-free and eyes-free. iOS shows the microphone indicator while it is on. |
 | Feedback | Sound for right; sound plus correction for wrong | Explanations; "try again" | Keeps pace high and teaches the right answer in the moment, without lecturing. |
+| Where the session flow lives | A state machine in the training core, taking events and returning effects | Inside the iOS app layer | The flow is the most intricate part of the app, and in the core every rule can be tested with a fake clock and fake speech, without a device. |
 | Listening starts after the prompt | Yes | Listening during the prompt | The app's own speech would be heard as an answer when playing through the speaker, and a player should hear the whole question. |
 | Starting from the headphones | Ask "Start training?" and need a second press or "yes" | Start at once; never from headphones | Earbud taps meant for music would otherwise start sessions by accident, while a confirmed start still allows training without taking the phone out. |
 | Pause acts immediately | Yes | Pause after the current prompt | A disconnected headset must not keep speaking through the speaker, and a player who pauses wants silence now. |

@@ -94,9 +94,12 @@ flowchart TB
     Openings["Opening lines\n(bundled, for move following)"]
     Speak["Spoken chess language\n(positions & moves to phrases, phrases to answers)"]
     Puzzles["Puzzle library\n(bundled Lichess subset)"]
+    Engine["Session engine\n(session flow: events in, effects out)"]
   end
-  UI --> Ex
-  UI --> Skill
+  UI --> Engine
+  Engine --> Ex
+  Engine --> Skill
+  Engine --> Speak
   Speech --> Speak
   UI --> Speech
   Audio --> UI
@@ -114,11 +117,12 @@ flowchart TB
 - **Spoken chess language** — turns positions, questions and moves into natural spoken phrases, and turns recognized speech into structured answers, flagging uncertain matches.
 - **Puzzle library** — the bundled puzzle subset with ratings and themes, queried by difficulty. A build-time script filters the Lichess database into the bundle.
 - **Speech I/O** — iOS speech synthesis and on-device speech recognition, driven by the spoken chess language.
-- **Session UI** — runs a training session: announces exercises, accepts voice or eyes-free touch input, gives feedback.
+- **Session engine** — the flow of a training session as a state machine in the core: it takes events (gestures, recognized speech, media commands, time) and returns effects (speak, listen, play a sound, save), so every rule of a session can be tested without a device.
+- **Session UI** — the iOS side of a session: turns real touches, speech results and audio events into engine events, and carries out the engine's effects.
 - **Audio session** — keeps a session running with the screen locked and maps headphone controls to pause, repeat and skip.
 - **Progress store** — persists skill estimates and history on the device.
 
-The training core has no iOS dependencies, so all exercise logic, scoring and difficulty selection can be tested with `swift test` without a simulator or device.
+The training core has no iOS dependencies, so all exercise logic, scoring, difficulty selection and session flow can be tested with `swift test` without a simulator or device.
 
 ## Key Design Decisions
 
