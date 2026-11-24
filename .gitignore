@@ -4,3 +4,6 @@
 xcuserdata/
 DerivedData/
 .DS_Store
+HearChessApp/HearChess.xcodeproj/
+HearChessApp/build/
+HearChessApp/Sources/Info.plist

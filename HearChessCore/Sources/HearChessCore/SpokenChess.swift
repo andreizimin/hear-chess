@@ -214,6 +214,30 @@ public enum SpokenChess {
         return result.filter { $0 != .filler }
     }
 
+    /// Words and phrases allowed at a moment, given to the recognizer as contextual hints.
+    // @spec VOICE-IN-002
+    public static func hints(for allowed: Allowed) -> [String] {
+        var words: [String] = []
+        for (phrase, item) in lexicon.sorted(by: { $0.key < $1.key }) {
+            switch item {
+            case let .command(c) where allowed.commands.contains(c): words.append(phrase)
+            case .colour where allowed.answerKind == .lightOrDark: words.append(phrase)
+            case .yes, .no: if allowed.answerKind == .yesOrNo { words.append(phrase) }
+            default: break
+            }
+        }
+        if allowed.answerKind == .square {
+            for file in 0..<8 {
+                for rank in 0..<8 {
+                    let sq = Square(unchecked: file, rank)
+                    words.append(sq.name)
+                    words.append("\(sq.fileLetter) \(numberWords[rank])")
+                }
+            }
+        }
+        return words
+    }
+
     /// Reads one transcription against what is allowed.
     // @spec SPOKEN-IN-001, SPOKEN-IN-004, SPOKEN-IN-010
     public static func read(_ transcription: String, allowed: Allowed) -> Reading {

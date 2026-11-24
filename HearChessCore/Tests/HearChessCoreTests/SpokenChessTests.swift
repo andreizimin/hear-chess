@@ -167,6 +167,16 @@ struct SpokenChessTests {
         #expect(SpokenChess.read("same", allowed: yesNo) == .answer(.yes))
     }
 
+    // @spec VOICE-IN-002
+    @Test func recognizerHintsAreTheWordsAllowedNow() {
+        let colourHints = SpokenChess.hints(for: colour)
+        #expect(colourHints.contains("dark") && colourHints.contains("light") && colourHints.contains("repeat"))
+        #expect(!colourHints.contains("yes") && !colourHints.contains("e4") && !colourHints.contains("resume"))
+        let squareHints = SpokenChess.hints(for: square)
+        #expect(squareHints.contains("e4") && squareHints.contains("e four") && !squareHints.contains("dark"))
+        #expect(SpokenChess.hints(for: .paused).sorted() == ["continue", "resume", "stop"])
+    }
+
     // MARK: Certainty
 
     // @spec SPOKEN-CERT-001
