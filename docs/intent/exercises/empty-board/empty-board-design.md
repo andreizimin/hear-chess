@@ -20,8 +20,10 @@ All questions are asked from White's side, using the board's direction names (up
 | Level | Squares asked |
 |---|---|
 | 1 | Corners and the four centre squares (d4, e4, d5, e5) |
-| 2 | Any square on the edge of the board |
+| 2 | Any square on the edge of the board, plus the centre squares |
 | 3 | Any square |
+
+Each level includes the squares of the levels below it.
 
 ### Directions
 
@@ -32,21 +34,23 @@ All questions are asked from White's side, using the board's direction names (up
 | 1 | One step up, down, left or right |
 | 2 | Two or three steps up, down, left or right |
 | 3 | One to three steps in a diagonal direction |
-| 4 | A combined offset: one in one direction and two in another at right angles (a knight's jump), spoken as "one up, two right" |
+| 4 | A knight's jump: one step up or down and two left or right, or two up or down and one left or right. The up-or-down part is spoken first: "one up, two right" |
 
 ### Diagonals
 
 Three question types share one drill:
 
-- **Same diagonal** — "c one and h six. Same diagonal?" Answer kind: yes or no. Half the questions have the answer yes. The no cases use squares of the same colour, so colour alone does not give the answer away.
-- **Diagonal end** — "From c one, up-right to the edge?" Answer kind: square.
-- **Long diagonals** — "a one to h eight. Is d four on it?" Answer kind: yes or no.
+- **Same diagonal** — "c one and h six. Same diagonal?" Answer kind: yes or no. Each question has an even chance of the answer being yes. The two squares are always different, and the no cases use two squares of the same colour, so colour alone does not give the answer away.
+- **Diagonal end** — "From c one, up-right to the edge?" Answer kind: square. Only directions with at least one square to travel are asked, so the answer is never the starting square.
+- **Long diagonals** — "a one to h eight. Is d four on it?" Answer kind: yes or no. Each question has an even chance of the answer being yes. The square asked is never one of the diagonal's two ends, and in the no cases it is the diagonal's colour (dark for a1–h8, light for h1–a8), so colour alone does not give the answer away.
 
 | Level | Questions |
 |---|---|
 | 1 | Long diagonals only |
-| 2 | Same diagonal and diagonal end, starting from an edge square |
+| 2 | Same diagonal and diagonal end, with the first (or only) square on the edge of the board |
 | 3 | Same diagonal and diagonal end, from any square |
+
+At levels 2 and 3, same diagonal and diagonal end are equally likely.
 
 ## Decisions & Alternatives
 
@@ -54,7 +58,7 @@ Three question types share one drill:
 |---|---|---|---|
 | Three drills: colour, directions, diagonals | These three | Adding "name the square at a position" (e.g. "third square on the fourth rank") | Coordinates-by-position mostly tests counting, which is what the rung should replace with seeing. Directions already cover moving around the board. |
 | Colour levels start with corners and centre | Landmarks first | Random squares from the start | Corners and the centre are the anchors players build the rest of the board from. |
-| Same-diagonal "no" answers keep the colour equal | Yes | Random second square | Different colours guarantee "no"; a player could answer from colour alone and skip the diagonal. |
+| "No" answers keep the colour equal (same diagonal and long diagonals) | Yes | Random squares | Every diagonal is one colour, so a square of the other colour is always "no"; a player could answer from colour alone and skip the diagonal. |
 | Knight-jump offsets as the last directions level | Yes | Leaving knight jumps to piece routes | It is pure geometry on an empty board and prepares the piece-routes rung. |
 
 ## Open Questions & Future Decisions

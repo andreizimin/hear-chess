@@ -37,7 +37,7 @@ Blindfold skill rests mainly on a visual-spatial picture of the board, not on re
 Every exercise can be completed without looking at the screen. Speech carries everything the player needs to hear. Input works two ways, and the player can use either at any moment:
 
 - **Voice** — chess-aware speech recognition that understands squares, pieces and moves, and confirms or asks again when it is unsure (for example between "b" and "d").
-- **Touch without sight** — whole-screen gestures and large regions whose meaning is announced by voice, never small buttons that need to be seen.
+- **Touch without sight** — gestures that work anywhere on the screen, with fixed meanings or meanings announced by voice, never buttons that need to be seen.
 
 Training continues with the screen locked, and headphone controls can pause, repeat or skip.
 

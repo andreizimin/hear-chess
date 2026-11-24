@@ -33,21 +33,24 @@ Answer kinds and the words accepted for them:
 | Answer kind | Accepted words |
 |---|---|
 | Light or dark | "light", "white" / "dark", "black" |
-| Yes or no | "yes", "yeah", "yep", "correct", "same" / "no", "nope", "different", "not" |
-| Square | a file word followed by a rank word |
-| Commands (any time) | "repeat", "again" / "skip", "I don't know", "pass" / "pause" / "stop" |
+| Yes or no | "yes", "yeah", "yep", "correct", "same" / "no", "nope", "different", "not the same", "not same" |
+| Square | a file word followed by a rank word, or a single token made of both ("b4", "B4") |
+| Commands (any time) | "repeat", "again" / "skip", "I don't know", "not sure", "pass" / "pause" / "resume", "continue" / "stop" |
 
-File words include the letter itself and the words it is commonly heard as ("bee", "be", "see", "sea", "dee", "gee", "jee", "aitch"), the NATO alphabet (alpha, bravo, charlie, delta, echo, foxtrot, golf, hotel), and the German chess alphabet (Anton, Berta, Cäsar, Dora, Emil, Friedrich, Gustav, Heinrich). Rank words include the digits, the number words and their common homophones ("won", "to", "too", "for", "fore", "ate").
+File words include the letter itself and the words it is commonly heard as ("ay", "hey", "bee", "be", "see", "sea", "dee", "ee", "ef", "gee", "jee", "aitch", "age"), the NATO alphabet (alpha, bravo, charlie, delta, echo, foxtrot, golf, hotel), and the German chess alphabet (Anton, Berta, Cäsar or Caesar, Dora, Emil, Friedrich, Gustav, Heinrich). Rank words include the digits, the number words and their common homophones ("won", "to", "too", "for", "fore", "ate"). Whole-word homophones of a square ("before" for b four) are accepted too. These lists are a starting set, extended as real misrecognitions are found.
+
+A transcription reads as one answer only when everything in it that is an answer word agrees: "dark, dark" reads as dark, but "light no dark" or "yes not the same" reads as nothing. Filler words ("um", "uh", "it's", "I think") are ignored.
 
 ## Certainty
 
-The result of reading the alternatives is one of:
+The recognizer ranks its alternatives, best first. The result of reading them is one of:
 
-- **Understood** — every alternative that reads as an answer reads as the same answer.
-- **Unsure** — alternatives read as two or more different answers (for example "b four" and "d four").
-- **Not understood** — no alternative reads as an answer or a command.
+- **Command** — the best alternative reads as a command. Commands are recognized only from the best alternative, so a lower-ranked "stop" never interrupts an answer.
+- **Understood** — the best alternative reads as an answer, and no other alternative reads as a different answer.
+- **Unsure** — the alternatives read as two or more different answers (for example "b four" and "d four"), or the best alternative reads as nothing and a lower-ranked one reads as an answer. The candidates are listed in the recognizer's order, at most three.
+- **Not understood** — nothing else applies.
 
-Unsure results carry the candidate answers so the session can ask which was meant. Spoken chess never picks between them.
+For yes-or-no questions, an unsure result between yes and no counts as not understood, since asking "yes?" to settle it would be confusing. Spoken chess never picks between candidates.
 
 ## Decisions & Alternatives
 

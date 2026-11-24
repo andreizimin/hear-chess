@@ -13,7 +13,7 @@ Piece movement, attacks, check and legal moves belong to the board too. They are
 
 ## Squares
 
-A square is a file (a–h) and a rank (1–8). Internally both are numbers 0–7, with a1 as (0, 0) and h8 as (7, 7). A square can be created from its file and rank numbers or from its name ("e4"); either way, anything outside the board is rejected rather than wrapped or clamped.
+A square is a file (a–h) and a rank (1–8). Internally both are numbers 0–7, with a1 as (0, 0) and h8 as (7, 7). A square can be created from its file and rank numbers or from its name. A name is exactly one file letter and one rank digit, in either case and ignoring surrounding spaces ("e4", "E4"); anything else, including squares outside the board ("i1", "e9", "e44"), is rejected rather than wrapped or clamped.
 
 ## Colour
 
@@ -43,9 +43,11 @@ Every square lies on one file, one rank and two diagonals: one running up-right 
 The board answers:
 
 - the two diagonals through a square;
-- whether two squares share a diagonal, a file or a rank;
-- the end square reached by travelling from a square in a diagonal direction until the edge;
+- whether two squares share a diagonal, a file or a rank (a square shares every line with itself);
+- the end square reached by travelling from a square in a diagonal direction until the edge, or nothing when the square is already at the edge in that direction (a1 down-left, c1 down-right);
 - the length of a diagonal (1 to 8 squares).
+
+Each corner lies on one diagonal of length 1, made of the corner alone (a1–a1 and h8–h8 run up-left; h1–h1 and a8–a8 run up-right). It is a real diagonal for these questions, but exercises never ask about it.
 
 The two long diagonals, a1–h8 and h1–a8, are the only diagonals of length 8. a1–h8 is all dark squares and h1–a8 all light; every diagonal is a single colour.
 
