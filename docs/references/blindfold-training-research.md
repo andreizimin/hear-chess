@@ -2,6 +2,18 @@
 
 Background for the training ladder in `docs/high-level-design.md`. Most sources are coaching blogs and training guides rather than research; the cognitive findings at the end are from published studies.
 
+## The method the ladder is built on
+
+Chess House, *How to Develop Blindfold Chess Skill* (https://www.youtube.com/watch?v=Z4U336yifjg). The presenter, who plays several blindfold games at once, argues that almost anyone can learn blindfold chess by working through five stages:
+
+1. **Colours.** With the board upside down (no coordinates visible), fix one corner: h1 is light ("white on right"). Extend from there — g1 next to it is dark, g2 next to that is light, h8 opposite is dark — until any square's colour is known.
+2. **Piece visualization.** Put a single piece on a square and, without looking, name every square it attacks. Start in a corner (bishop on h1: g2, f3, e4, d5, c6, b7, a8), then the rook, queen, king and pawn, and the knight last. Then any piece on any square, eyes closed.
+3. **Tracking movement.** Use the knight, because it is the hardest. Move it along the edge from each square to the next (h1 to h2: h1–f2–g4–h2), then across the board (h3 to a3: h3–f2–d3–b4–c2–a3).
+4. **Practising games.** With a partner and all the pieces set up, each side says three or four moves without moving anything; then both recall the moves aloud and play them on the board to check. Continue the game chunk by chunk, then grow the chunks to five or six moves. Next, clear the board and say as many moves as possible — about ten to start — setting up the position when stuck, until fifteen is reached.
+5. **Full blindfold game.** Repeat stage 4 with the board turned around, then play blindfold with someone, five or ten moves at a time, setting up in between, until a full game is played blindfold.
+
+He presents visualization as the core skill of chess calculation: seeing future positions and the steps to reach them.
+
 ## What the guides agree on
 
 - **Order of skills.** Learn the empty board first (square names and colours), then move single pieces on it, then follow move sequences from known openings, then hold static positions, and play full blindfold games last. Guides vary in detail but agree on this order.

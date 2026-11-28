@@ -20,6 +20,20 @@ Training follows the order that blindfold coaches and training guides broadly ag
 4. **Position memory** — the app reads out a small position, then asks questions about it (what attacks the queen, is the king in check, what is on e5). Positions grow from two or three pieces towards full middlegames, and are asked from both White's and Black's side.
 5. **Blindfold puzzles** — the app reads out a position with a tactic to find, and the player gives the solution move by move. Puzzles start with few pieces and one-move solutions and grow in both.
 
+### The method behind the ladder
+
+The ladder is built on the five-stage method taught in the Chess House video *How to Develop Blindfold Chess Skill* (https://www.youtube.com/watch?v=Z4U336yifjg), adapted for training by ear. The method is borrowed with credit: the app and its docs name it as their source. Each stage maps to a rung, and the stage's concrete practice shapes that rung's drills:
+
+| Stage of the method | Practice | Where it lives in the app |
+|---|---|---|
+| 1. Colours | Learn one corner by heart (h1 is light — "white on right"), then extend outward: neighbouring squares alternate, and the opposite corner matches. | Empty board — square colour grows outward from anchor squares. |
+| 2. Piece visualization | Place one piece on a square and name every square it attacks, starting from a corner; bishop first, knight last. | Piece routes — naming a piece's reach, ordered from the simplest piece to the knight. |
+| 3. Tracking movement | Move a knight along the edge of the board one square at a time, then across the board. | Piece routes — knight routes, edge walks before routes across the board. |
+| 4. Practising games | Say moves without moving pieces, a few at a time; recall the chunk and check it; grow the chunk from three or four moves to five or six, then ten to fifteen. | Move following — sequences that grow in length, checked against recall. |
+| 5. Full blindfold game | Repeat from the flipped side of the board, then play full games. | Questions from Black's side as a later level of each rung. Full games come after the first version (see Non-Goals). |
+
+Position memory and blindfold puzzles do not come from this method; they come from the wider training guides, and sit between move following and full games as the steps that turn following a game into calculating in one.
+
 ### Adaptive difficulty along the ladder
 
 The ladder sets the order; adaptive difficulty sets the pace. The app keeps a skill estimate for each kind of exercise, judged on both accuracy and response time, and chooses the next exercise to sit just above what the player reliably gets right. A rung opens once the player is reliable on the rung below, and earlier rungs keep returning in short reviews so skills do not fade. A beginner never has to pick a level: they start on the empty board and move up as they succeed. A strong player can take a short placement run that opens the rungs they already master, rather than climbing through every one.
@@ -133,6 +147,7 @@ The training core has no iOS dependencies, so all exercise logic, scoring, diffi
 | All data on the device, no accounts | Account with cloud sync; on-device with sync designed in | Offline use and privacy matter more than multi-device progress for a personal app. Cost: progress is lost with the phone unless the device backup includes it. |
 | Puzzles from a bundled, filtered Lichess subset | Generating puzzles with an on-device engine; a hand-curated set | Lichess puzzles are human-played, rated, themed and public domain; filtering for small positions and short solutions gives a large supply of puzzles that are speakable blindfold. Generated puzzles tend to feel unnatural, and a curated set runs out. |
 | A fixed ladder of exercise kinds, paced by adaptive difficulty | Purely adaptive with no order; a fixed course of hand-made levels; the player chooses | Blindfold skill builds in a known order (empty board → piece routes → move following → positions → calculation), so the order is fixed; how fast a player climbs varies widely, so the pace adapts. Beginners start without choosing a level, strong players skip ahead through placement, and no level-by-level course has to be written by hand. |
+| Ladder built on one named, credited method (Chess House, *How to Develop Blindfold Chess Skill*), with its stages adapted into the existing rungs | Making the method's five stages the ladder itself, ending in chunked blindfold games against an engine; a separate guided course following the method alongside the adaptive ladder | One coherent, proven progression gives each rung concrete practice to build drills from, and fits the ladder the training guides already agree on. Making the stages the ladder would require full games and an engine, which the first version leaves out. A separate course would give the player two ways to progress and need written coaching, against starting without choosing a level. |
 | Move following as its own rung, using real opening lines | Going straight from piece routes to static positions | Following a short, familiar sequence of moves is the standard bridge in blindfold training between moving one piece and holding a whole position, and real openings give natural, meaningful positions. |
 
 ## Success Metrics
@@ -152,6 +167,7 @@ The training core has no iOS dependencies, so all exercise logic, scoring, diffi
 
 ## References
 
+- Method behind the ladder: Chess House, *How to Develop Blindfold Chess Skill*, https://www.youtube.com/watch?v=Z4U336yifjg
 - Training research and sources behind the ladder: `docs/references/blindfold-training-research.md`
 - Lichess puzzle database (CC0): https://database.lichess.org/#puzzles
 - Apple Speech framework (`SFSpeechRecognizer`) and `AVSpeechSynthesizer`
