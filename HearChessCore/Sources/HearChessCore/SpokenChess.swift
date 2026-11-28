@@ -50,21 +50,45 @@ public enum Hearing: Hashable, Sendable {
 public enum SpokenChess {
     // MARK: Output
 
-    /// How each file letter is spelled so the speech engine says its name.
-    // @spec SPOKEN-OUT-002
-    public static var letterPronunciation: [Character: String] {
-        ["a": "ay", "b": "bee", "c": "cee", "d": "dee", "e": "ee", "f": "ef", "g": "gee", "h": "aitch"]
+    /// Each file letter's name in IPA, for the voice to apply so the engine says the letter's name.
+    public static let letterIPA: [Character: String] = [
+        "A": "eɪ", "B": "biː", "C": "siː", "D": "diː", "E": "iː", "F": "ɛf", "G": "dʒiː", "H": "eɪtʃ",
+    ]
+
+    /// A standalone capital file letter in a phrase, with its IPA name.
+    public struct LetterPronunciation: Hashable, Sendable {
+        public let range: Range<String.Index>
+        public let ipa: String
+    }
+
+    /// The standalone capital letters A–H in a phrase, each with its IPA name.
+    // @spec SPOKEN-OUT-005
+    public static func letterPronunciations(in phrase: String) -> [LetterPronunciation] {
+        var result: [LetterPronunciation] = []
+        var i = phrase.startIndex
+        while i < phrase.endIndex {
+            let next = phrase.index(after: i)
+            let before = i == phrase.startIndex ? nil : phrase[phrase.index(before: i)]
+            let after = next == phrase.endIndex ? nil : phrase[next]
+            if let ipa = letterIPA[phrase[i]],
+               !(before?.isLetter ?? false) && !(before == "'"),
+               !(after?.isLetter ?? false) && !(after == "'") {
+                result.append(LetterPronunciation(range: i..<next, ipa: ipa))
+            }
+            i = next
+        }
+        return result
     }
 
     static let numberWords = ["one", "two", "three", "four", "five", "six", "seven", "eight"]
 
-    /// "ee four" for e4.
+    /// "E4" for e4.
     // @spec SPOKEN-OUT-001
     public static func speak(_ square: Square) -> String {
-        "\(letterPronunciation[square.fileLetter]!) \(numberWords[square.rank])"
+        "\(square.fileLetter.uppercased())\(square.rank + 1)"
     }
 
-    static func spokenFile(_ file: Int) -> String { letterPronunciation[Array("abcdefgh")[file]]! }
+    static func spokenFile(_ file: Int) -> String { Array("ABCDEFGH")[file].description }
     static func spokenRank(_ rank: Int) -> String { numberWords[rank] }
 
     static func directionWords(_ d: Direction) -> String {
@@ -103,7 +127,7 @@ public enum SpokenChess {
         }
     }
 
-    /// The words spoken after a wrong answer, such as "Ef six is dark." or "Gee four."
+    /// The words spoken after a wrong answer, such as "F6 is dark." or "G4."
     // @spec SPOKEN-OUT-004
     public static func correction(for exercise: Exercise) -> String {
         guard let answer = exercise.correction else { return "" }
@@ -122,7 +146,7 @@ public enum SpokenChess {
         }
     }
 
-    /// The question asked to confirm an unsure candidate, such as "Bee four?" or "Dark?".
+    /// The question asked to confirm an unsure candidate, such as "B4?" or "Dark?".
     public static func candidate(_ answer: Answer) -> String {
         switch answer {
         case let .square(s): sentence("\(speak(s))?")

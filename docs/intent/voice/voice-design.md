@@ -11,7 +11,7 @@ Voice is the app's mouth and ears: iOS speech synthesis for output and iOS speec
 
 ## Speaking
 
-Speech uses `AVSpeechSynthesizer` with the highest-quality installed English voice (premium, then enhanced, then default), preferring the phone's own English variant among voices of equal quality, at 0.9 times the framework's default rate so square names are easy to follow. Voice reports when an utterance finishes, so the session knows when to start listening. Speaking can be stopped immediately, for pause and stop.
+Speech uses `AVSpeechSynthesizer` with the highest-quality installed English voice (premium, then enhanced, then default), preferring the phone's own English variant among voices of equal quality, at 0.9 times the framework's default rate so square names are easy to follow. Before speaking a phrase, voice marks each standalone capital letter A–H with the IPA that spoken chess gives for it, using the framework's IPA notation attribute, so the engine says the letter's name instead of reading it as a word. Voice reports when an utterance finishes, so the session knows when to start listening. Speaking can be stopped immediately, for pause and stop.
 
 ## Listening
 

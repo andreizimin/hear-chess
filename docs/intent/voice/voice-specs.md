@@ -8,6 +8,7 @@ Design: `voice-design.md`
 - [ ] **VOICE-OUT-002**: Voice shall speak at 0.9 times the speech framework's default speech rate (`AVSpeechUtteranceDefaultSpeechRate`).
 - [ ] **VOICE-OUT-003**: When an utterance finishes, voice shall report that it has finished.
 - [ ] **VOICE-OUT-004**: When asked to stop speaking, voice shall stop the current utterance at once.
+- [ ] **VOICE-OUT-005**: When speaking a phrase, voice shall mark each standalone capital letter A–H with its IPA pronunciation from spoken chess, so the speech engine says the letter\'s name.
 
 ## Listening
 

@@ -13,16 +13,24 @@ Two principles shape it. Spoken output sounds like a chess player talking, short
 
 ## Speaking squares and prompts
 
-A square is spoken as its file letter and rank number: "e four". Output text spells each letter the way it should be pronounced, taken from one table of letter pronunciations ("ay four" for a4), so the speech engine says each letter as a letter. In particular "a" must never be read as the article "uh".
+A square is written as in algebraic notation with a capital letter: "E4". The speech engine says the rank digit as a number, and the same text reads naturally on screen.
+
+Speech engines read a lone letter unreliably: "A" can come out as the article "uh", and pronunciation spellings such as "ay" are read as words ("aye"). So spoken chess also keeps one table giving each file letter's name in IPA:
+
+| Letter | A | B | C | D | E | F | G | H |
+|---|---|---|---|---|---|---|---|---|
+| IPA | eɪ | biː | siː | diː | iː | ɛf | dʒiː | eɪtʃ |
+
+For any phrase, spoken chess gives the position of each standalone capital A–H together with its IPA. The voice applies these, so the engine is told each letter's exact sounds. IPA belongs to no speech engine, so the same table serves any voice that accepts IPA. Templates never use a standalone capital A–H for anything but a square's file.
 
 Prompts are short sentences built from templates, one per kind of question. For example:
 
-- "f six. Light or dark?"
-- "Two right from e four?"
-- "c one and h six. Same diagonal?"
-- "From c one, up-right to the edge?"
+- "F6. Light or dark?"
+- "Two right from E4?"
+- "C1 and H6. Same diagonal?"
+- "From C1, up-right to the edge?"
 
-Feedback is shorter still: a wrong answer is followed by the correct one in a few words ("f six is dark", "g four"). Every template is in one place, so wording is changed without touching exercise logic.
+Feedback is shorter still: a wrong answer is followed by the correct one in a few words ("F6 is dark", "G4"). Every template is in one place, so wording is changed without touching exercise logic.
 
 ## Understanding answers
 
@@ -56,7 +64,8 @@ These are checked in that order: a command first, then understood, then unsure. 
 
 | Decision | Chosen | Alternatives Considered | Rationale |
 |---|---|---|---|
-| Output of square names | Plain letters and numbers ("e four") | Phonetic words ("echo four") | Matches how chess players talk and think about squares. Phonetic output adds a translation step in the player's head. |
+| Output of square names | Plain letters and numbers, written as notation ("E4") | Phonetic words ("echo four"); the rank as a number word ("E four") | Matches how chess players talk and think about squares, and the text shown on screen is the notation the player is learning. Phonetic output adds a translation step in the player's head; number words read oddly on screen and gain nothing in speech, where the engine says digits reliably. |
+| Pronouncing file letters | Capital letter in the text, pronounced from a table of IPA letter names | Pronunciation spellings in the text ("ay four"); the bare letter left to the engine | Listening on a device showed engines read pronunciation spellings as words ("aye four"), and a bare letter can be read as a word ("A" as the article). IPA states the sounds exactly, keeps the text clean for display, and works with any engine that accepts IPA. |
 | Input of square names | Plain letters plus NATO and German chess phonetics | Plain only; phonetic only | Plain letters are natural but b/d/e/g are easily confused; accepting phonetics gives the player an easy way to be unmistakable without forcing it. |
 | Reading only the expected answer kind | Yes | Reading every possible answer | Most misrecognitions read as nothing in the expected kind, so they fail safely instead of becoming wrong answers. |
 | Disagreeing alternatives | Report unsure with candidates | Take the recognizer's top choice | A misheard answer scored as wrong would push the player towards touch and break the eyes-free goal. |
@@ -65,5 +74,4 @@ These are checked in that order: a command first, then understood, then unsure. 
 
 ### Deferred
 1. Speaking pieces, moves and positions — designed with the move-following and position-memory rungs.
-2. The exact letter text for reliable pronunciation, settled by listening on a device.
-3. Whether other languages' phonetic alphabets are worth accepting.
+2. Whether other languages' phonetic alphabets are worth accepting.

@@ -10,49 +10,69 @@ struct SpokenChessTests {
     // MARK: Output
 
     // @spec SPOKEN-OUT-001
-    @Test func squareIsSpokenAsLetterSpellingAndNumberWord() throws {
-        #expect(SpokenChess.speak(try sq("a4")) == "ay four")
-        #expect(SpokenChess.speak(try sq("e4")) == "ee four")
-        #expect(SpokenChess.speak(try sq("h8")) == "aitch eight")
-        #expect(SpokenChess.speak(try sq("c1")) == "cee one")
-    }
-
-    // @spec SPOKEN-OUT-002
-    @Test func everyFileLetterHasAPronunciationThatIsNotAWord() {
-        let table = SpokenChess.letterPronunciation
-        #expect(Set(table.keys) == Set(files))
-        #expect(table["a"] == "ay")
-        for (_, spelling) in table {
-            #expect(!["a", "an", "the", "be", "see", "sea"].contains(spelling.lowercased()))
-        }
+    @Test func squareIsSpokenAsCapitalLetterAndNumberWord() throws {
+        #expect(SpokenChess.speak(try sq("a4")) == "A4")
+        #expect(SpokenChess.speak(try sq("e4")) == "E4")
+        #expect(SpokenChess.speak(try sq("h8")) == "H8")
+        #expect(SpokenChess.speak(try sq("c1")) == "C1")
     }
 
     // @spec SPOKEN-OUT-003
     @Test func promptsAreBuiltFromTemplates() throws {
-        #expect(SpokenChess.text(for: .squareColour(try sq("f6"))) == "Ef six. Light or dark?")
-        #expect(SpokenChess.text(for: .direction(from: try sq("e4"), steps: [Step(2, .right)])) == "Two right from ee four?")
-        #expect(SpokenChess.text(for: .direction(from: try sq("e4"), steps: [Step(1, .up), Step(2, .right)])) == "One up, two right from ee four?")
-        #expect(SpokenChess.text(for: .direction(from: try sq("b2"), steps: [Step(3, .upRight)])) == "Three up-right from bee two?")
-        #expect(SpokenChess.text(for: .sameDiagonal(try sq("c1"), try sq("h6"))) == "Cee one and aitch six. Same diagonal?")
-        #expect(SpokenChess.text(for: .diagonalEnd(from: try sq("c1"), direction: .upRight)) == "From cee one, up-right to the edge?")
+        #expect(SpokenChess.text(for: .squareColour(try sq("f6"))) == "F6. Light or dark?")
+        #expect(SpokenChess.text(for: .direction(from: try sq("e4"), steps: [Step(2, .right)])) == "Two right from E4?")
+        #expect(SpokenChess.text(for: .direction(from: try sq("e4"), steps: [Step(1, .up), Step(2, .right)])) == "One up, two right from E4?")
+        #expect(SpokenChess.text(for: .direction(from: try sq("b2"), steps: [Step(3, .upRight)])) == "Three up-right from B2?")
+        #expect(SpokenChess.text(for: .sameDiagonal(try sq("c1"), try sq("h6"))) == "C1 and H6. Same diagonal?")
+        #expect(SpokenChess.text(for: .diagonalEnd(from: try sq("c1"), direction: .upRight)) == "From C1, up-right to the edge?")
         let a1h8 = Diagonal(start: try sq("a1"), end: try sq("h8"))
-        #expect(SpokenChess.text(for: .longDiagonal(a1h8, try sq("d4"))) == "Ay one to aitch eight. Is dee four on it?")
+        #expect(SpokenChess.text(for: .longDiagonal(a1h8, try sq("d4"))) == "A1 to H8. Is D4 on it?")
     }
 
     // @spec SPOKEN-OUT-004
     @Test func correctionSaysRightAnswerInAFewWords() throws {
         let colourEx = Exercise(drill: .squareColour, level: 1, prompt: .squareColour(try sq("f6")),
                                 answerKind: .lightOrDark, correctAnswers: [.colour(.dark)])
-        #expect(SpokenChess.correction(for: colourEx) == "Ef six is dark.")
+        #expect(SpokenChess.correction(for: colourEx) == "F6 is dark.")
         let squareEx = Exercise(drill: .directions, level: 1, prompt: .direction(from: try sq("e4"), steps: [Step(2, .right)]),
                                 answerKind: .square, correctAnswers: [.square(try sq("g4"))])
-        #expect(SpokenChess.correction(for: squareEx) == "Gee four.")
+        #expect(SpokenChess.correction(for: squareEx) == "G4.")
         let yesEx = Exercise(drill: .diagonals, level: 2, prompt: .sameDiagonal(try sq("c1"), try sq("h6")),
                              answerKind: .yesOrNo, correctAnswers: [.yes])
         #expect(SpokenChess.correction(for: yesEx).hasPrefix("Yes"))
         let noEx = Exercise(drill: .diagonals, level: 2, prompt: .sameDiagonal(try sq("c1"), try sq("h5")),
                             answerKind: .yesOrNo, correctAnswers: [.no])
         #expect(SpokenChess.correction(for: noEx).hasPrefix("No"))
+    }
+
+    // @spec SPOKEN-OUT-005
+    @Test func everyFileLetterHasAnIPAName() {
+        let ipa = SpokenChess.letterIPA
+        #expect(ipa == ["A": "eɪ", "B": "biː", "C": "siː", "D": "diː", "E": "iː", "F": "ɛf", "G": "dʒiː", "H": "eɪtʃ"])
+    }
+
+    // @spec SPOKEN-OUT-005
+    @Test func letterPronunciationsMarkOnlyStandaloneCapitalFileLetters() {
+        let phrase = "A1 to H8. Is D4 on it?"
+        let marks = SpokenChess.letterPronunciations(in: phrase)
+        #expect(marks.map { String(phrase[$0.range]) } == ["A", "H", "D"])
+        #expect(marks.map(\SpokenChess.LetterPronunciation.ipa) == ["eɪ", "eɪtʃ", "diː"])
+        #expect(SpokenChess.letterPronunciations(in: "Dark. Correct, a big Hello. I don't know.").isEmpty)
+        #expect(SpokenChess.letterPronunciations(in: "G4?").map(\SpokenChess.LetterPronunciation.ipa) == ["dʒiː"])
+    }
+
+    // @spec SPOKEN-OUT-005
+    @Test func everyPromptMarksExactlyItsSquareLetters() throws {
+        let prompts: [(Prompt, Int)] = [
+            (.squareColour(try sq("f6")), 1),
+            (.direction(from: try sq("e4"), steps: [Step(1, .up), Step(2, .right)]), 1),
+            (.sameDiagonal(try sq("c1"), try sq("h6")), 2),
+            (.diagonalEnd(from: try sq("c1"), direction: .upRight), 1),
+            (.longDiagonal(Diagonal(start: try sq("a1"), end: try sq("h8")), try sq("d4")), 3),
+        ]
+        for (prompt, squares) in prompts {
+            #expect(SpokenChess.letterPronunciations(in: SpokenChess.text(for: prompt)).count == squares)
+        }
     }
 
     // MARK: Reading one transcription

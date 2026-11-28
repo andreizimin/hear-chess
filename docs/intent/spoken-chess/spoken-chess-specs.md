@@ -4,10 +4,10 @@ Design: `spoken-chess-design.md`
 
 ## Output
 
-- [x] **SPOKEN-OUT-001**: When speaking a square, spoken chess shall produce the file letter's pronunciation spelling followed by its rank as a number word, taking the spelling from one table of letter pronunciations (for example "ay four" for a4, "cee four" for c4).
-- [x] **SPOKEN-OUT-002**: The letter-pronunciation table shall give each file letter a spelling that the speech engine pronounces as the letter's name, never as a word (in particular "a" is never spoken as the article).
+- [x] **SPOKEN-OUT-001**: When speaking a square, spoken chess shall produce the capital file letter followed by its rank digit (for example "A4" for a4, "E4" for e4).
 - [x] **SPOKEN-OUT-003**: Spoken chess shall build every prompt, correction and session phrase from templates kept in one place, one template per kind of phrase.
-- [x] **SPOKEN-OUT-004**: When speaking the correction after a wrong answer, spoken chess shall produce the right answer in a few words ("f six is dark", "g four").
+- [x] **SPOKEN-OUT-004**: When speaking the correction after a wrong answer, spoken chess shall produce the right answer in a few words ("F6 is dark", "G4").
+- [x] **SPOKEN-OUT-005**: Spoken chess shall keep one table giving each file letter\'s name in IPA (A eɪ, B biː, C siː, D diː, E iː, F ɛf, G dʒiː, H eɪtʃ), and shall give, for any phrase, the range of each standalone capital letter A–H with that letter\'s IPA.
 
 ## Reading one transcription
 

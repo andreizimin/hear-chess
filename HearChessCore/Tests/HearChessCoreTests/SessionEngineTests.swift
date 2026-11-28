@@ -339,7 +339,7 @@ struct SessionEngineTests {
         let h = Harness(exercises: [twoRightOfE4])
         h.start()
         let fx = h.say(["b four", "d four"])
-        #expect(spoken(fx) == ["Bee four?"])
+        #expect(spoken(fx) == ["B4?"])
         #expect(h.engine.state == .confirming)
         #expect(listens(h.finishSpeaking()) == [.exercise(.yesOrNo)])
     }
@@ -360,9 +360,9 @@ struct SessionEngineTests {
         let h = Harness(exercises: [twoRightOfE4])
         h.start()
         h.say(["b four", "g four", "d four"]); h.finishSpeaking()
-        #expect(spoken(h.say("no")) == ["Gee four?"])
+        #expect(spoken(h.say("no")) == ["G4?"])
         h.finishSpeaking()
-        #expect(spoken(h.gesture(.swipeLeft)) == ["Dee four?"])
+        #expect(spoken(h.gesture(.swipeLeft)) == ["D4?"])
     }
 
     // @spec SESSION-CONF-004
@@ -519,7 +519,7 @@ struct SessionEngineTests {
         #expect(spoken(h.say("banana")) == ["Sorry?"])
         #expect(listens(h.finishSpeaking()) == [.exercise(.yesOrNo)])
         #expect(h.engine.state == .confirming)
-        #expect(spoken(h.say("no")) == ["Dee four?"], "still on the first candidate until answered")
+        #expect(spoken(h.say("no")) == ["D4?"], "still on the first candidate until answered")
     }
 
     // @spec SESSION-PAUSE-006

@@ -44,7 +44,7 @@ struct SessionInputAndAudioTests {
         let h = Harness(exercises: [twoRightOfE4])
         h.start()
         let fx = h.gesture(.swipeUp)
-        #expect(spoken(fx) == ["File, ee."])
+        #expect(spoken(fx) == ["File, E."])
         #expect(h.engine.state == .pickingFile)
     }
 
@@ -53,9 +53,9 @@ struct SessionInputAndAudioTests {
         let h = Harness(exercises: [twoRightOfE4])
         h.start()
         h.gesture(.swipeUp); h.finishSpeaking()
-        #expect(spoken(h.gesture(.swipeUp)) == ["Ef."])
-        #expect(spoken(h.gesture(.swipeUp)) == ["Gee."])
-        #expect(spoken(h.gesture(.swipeDown)) == ["Ef."])
+        #expect(spoken(h.gesture(.swipeUp)) == ["F."])
+        #expect(spoken(h.gesture(.swipeUp)) == ["G."])
+        #expect(spoken(h.gesture(.swipeDown)) == ["F."])
     }
 
     // @spec TOUCH-SQ-003
@@ -89,7 +89,7 @@ struct SessionInputAndAudioTests {
         h.gesture(.swipeUp); h.gesture(.swipeUp); h.gesture(.swipeUp)   // g
         h.gesture(.doubleTap)                                            // rank 4
         let fx = h.gesture(.doubleTap)
-        #expect(spoken(fx).first == "Gee four.")
+        #expect(spoken(fx).first == "G4.")
         #expect(sounds(fx) == [.right])
         #expect(h.engine.state != .confirming)
         #expect(h.engine.progress.ladder.estimate(.directions).results.last?.method == .touch)
@@ -113,7 +113,7 @@ struct SessionInputAndAudioTests {
         let fx = h.gesture(.twoFingerTap)
         #expect(spoken(fx) == [SpokenChess.text(for: twoRightOfE4.prompt)])
         h.finishSpeaking()
-        #expect(spoken(h.gesture(.swipeUp)) == ["File, ee."], "pick starts again at e")
+        #expect(spoken(h.gesture(.swipeUp)) == ["File, E."], "pick starts again at e")
     }
 
     // @spec TOUCH-SQ-008

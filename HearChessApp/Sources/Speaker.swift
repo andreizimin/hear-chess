@@ -1,8 +1,9 @@
 // Speech output. Design: docs/intent/voice/voice-design.md
 
 import AVFoundation
+import HearChessCore
 
-// @spec VOICE-OUT-001, VOICE-OUT-002, VOICE-OUT-003, VOICE-OUT-004
+// @spec VOICE-OUT-001, VOICE-OUT-002, VOICE-OUT-003, VOICE-OUT-004, VOICE-OUT-005
 final class Speaker: NSObject, AVSpeechSynthesizerDelegate {
     private let synthesizer = AVSpeechSynthesizer()
     private let voice: AVSpeechSynthesisVoice?
@@ -34,11 +35,22 @@ final class Speaker: NSObject, AVSpeechSynthesizerDelegate {
 
     func speak(_ text: String) {
         if synthesizer.isSpeaking { stop() }
-        let utterance = AVSpeechUtterance(string: text)
+        let utterance = AVSpeechUtterance(attributedString: Speaker.withLetterPronunciations(text))
         utterance.voice = voice
         utterance.rate = AVSpeechUtteranceDefaultSpeechRate * 0.9
         current = utterance
         synthesizer.speak(utterance)
+    }
+
+    /// The phrase with each standalone file letter marked with its IPA name, so it is said as a letter.
+    // @spec VOICE-OUT-005
+    static func withLetterPronunciations(_ text: String) -> NSAttributedString {
+        let marked = NSMutableAttributedString(string: text)
+        for letter in SpokenChess.letterPronunciations(in: text) {
+            marked.addAttribute(NSAttributedString.Key(AVSpeechSynthesisIPANotationAttribute),
+                                value: letter.ipa, range: NSRange(letter.range, in: text))
+        }
+        return marked
     }
 
     func stop() {
