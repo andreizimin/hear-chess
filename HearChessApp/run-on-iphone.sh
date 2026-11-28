@@ -15,7 +15,8 @@ if ! command -v xcodegen >/dev/null; then
 fi
 xcodegen generate
 
-DEVICE_ID=$(xcrun devicectl list devices 2>/dev/null | awk '/iPhone/ && /connected|available/ {print $3; exit}')
+DEVICE_ID=$(xcrun devicectl list devices 2>/dev/null | awk '/iPhone/ && /physical/ && /connected|available/' \
+  | grep -oE '[0-9A-F]{8}-[0-9A-F]{16}|[0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12}' | head -1)
 if [ -z "${DEVICE_ID}" ]; then
   echo "No connected iPhone found. Unlock it, trust this Mac, and turn on Developer Mode." >&2
   xcrun devicectl list devices >&2 || true

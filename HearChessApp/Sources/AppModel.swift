@@ -85,7 +85,7 @@ final class AppModel: ObservableObject {
 
     // MARK: Events in
 
-    func gesture(_ g: Gesture) { send(.gesture(g)) }
+    func gesture(_ g: HearChessCore.Gesture) { send(.gesture(g)) }
 
     private func send(_ event: SessionEvent) {
         guard let engine else { return }

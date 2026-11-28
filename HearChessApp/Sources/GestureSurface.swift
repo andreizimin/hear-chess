@@ -7,7 +7,7 @@ import UIKit
 
 // @spec TOUCH-001, TOUCH-009, TOUCH-011
 struct GestureSurface: UIViewRepresentable {
-    let onGesture: (Gesture) -> Void
+    let onGesture: (HearChessCore.Gesture) -> Void
 
     func makeCoordinator() -> Coordinator { Coordinator(onGesture: onGesture) }
 
@@ -27,9 +27,9 @@ struct GestureSurface: UIViewRepresentable {
     }
 
     final class Coordinator: NSObject, UIGestureRecognizerDelegate {
-        var onGesture: (Gesture) -> Void
+        var onGesture: (HearChessCore.Gesture) -> Void
 
-        init(onGesture: @escaping (Gesture) -> Void) {
+        init(onGesture: @escaping (HearChessCore.Gesture) -> Void) {
             self.onGesture = onGesture
         }
 
